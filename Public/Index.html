@@ -1,2 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Velora AI</title>
+<style>
+body { margin:0; font-family:Arial; background:#0f172a; color:white; }
+#chat { width:400px; margin:auto; margin-top:50px; }
+#messages { height:300px; overflow:auto; }
+input, button { width:100%; padding:10px; }
+button { background:#6366f1; color:white; border:none; }
+</style>
+</head>
+<body>
 
-fetch('/api/chat', ...)
+<div id="chat">
+<h2>Velora AI</h2>
+<div id="messages"></div>
+<input id="input" placeholder="Ask something..." />
+<button onclick="send()">Send</button>
+</div>
+
+<script>
+let messages = [{role:"system",content:"You are Velora AI."}];
+
+async function send(){
+  let input = document.getElementById("input");
+  let text = input.value;
+  if(!text) return;
+
+  add("You: " + text);
+  input.value = "";
+
+  messages.push({role:"user",content:text});
+
+  let res = await fetch("/chat", {
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({messages})
+  });
+
+  let data = await res.json();
+  let reply = data.choices[0].message.content;
+
+  messages.push({role:"assistant",content:reply});
+  add("Velora: " + reply);
+}
+
+function add(t){
+  let d = document.createElement("div");
+  d.innerText = t;
+  document.getElementById("messages").appendChild(d);
+}
+</script>
+
+</body>
+</html>
