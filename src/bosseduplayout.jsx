@@ -1,7 +1,10 @@
-import React from "react";
+import BossedUpLayout from "./BossedUpLayout";
 
-export default function BossedUpLayout() {
-  return (
+function App() {
+  return <BossedUpLayout />;
+}
+
+export default App;
     <div className="flex h-screen bg-gray-100">
       {/* Left Sidebar */}
       <div className="w-64 bg-black text-white p-4">
